@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import pkg_resources
 import pwd
 
 PROJECT_NAME = 'dddppp'
@@ -53,7 +54,7 @@ ALLOWED_HOSTS = [
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,11 +64,22 @@ INSTALLED_APPS = (
     'dddp',
     'dddp.server',
     'dddp.accounts',
-    'django_extensions',
     'dddppp.slides',
-)
+]
 
-MIDDLEWARE_CLASSES = (
+for (requirement, pth) in [
+    ('django-extensions', 'django_extensions'),
+]:
+    try:
+        pkg_resources.get_distribution(requirement)
+    except (
+        pkg_resources.DistributionNotFound,
+        pkg_resources.VersionConflict,
+    ):
+        continue
+    INSTALLED_APPS.append(pth)
+
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,8 +87,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-)
+    #'django.middleware.security.SecurityMiddleware',
+]
 
 ROOT_URLCONF = 'dddppp.urls'
 
@@ -139,7 +151,7 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # django-secure
 # see: https://github.com/carljm/django-secure/ for more options
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
+#SECURE_SSL_REDIRECT = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_FRAME_DENY = True
 SESSION_COOKIE_SECURE = True
@@ -147,4 +159,3 @@ SESSION_COOKIE_HTTPONLY = True
 
 DDDPPP_CONTENT_TYPES = []
 PROJ_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-METEOR_STAR_JSON = os.path.join(PROJ_ROOT, 'build', 'bundle', 'star.json')

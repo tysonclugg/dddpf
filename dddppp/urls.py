@@ -1,4 +1,4 @@
-"""dddppp URL Configuration
+"""dddppp URL Configuration.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.8/topics/http/urls/
@@ -13,6 +13,8 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
+import os.path
+from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from dddp.server.views import MeteorView
@@ -23,6 +25,9 @@ urlpatterns = [
     url(
         r'^(app)?(?P<path>(((?(1)|app)|).*))$',
         MeteorView.as_view(
+            json_path=os.path.join(
+                settings.PROJ_ROOT, 'build', 'bundle', 'star.json',
+            ),
             runtime_config={
                 'PUBLIC_SETTINGS': {},
             },

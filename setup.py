@@ -14,8 +14,10 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'Django>=1.8.2',
-        'django-ddp>=0.9.2',
+        'Django>=1.8.3',
+        'django-ddp>=0.10.0',
+        'django-mptt>=0.7.4',
+        'django-mptt-admin>=0.2.1',
         'django-orderable>=3.1.0',
         'pybars3>=0.9.1',
         'whitenoise>=2.0',

@@ -4,7 +4,6 @@ var App = React.createClass({
     mixins: [ReactMeteorData],
     getMeteorData() {
         Meteor.subscribe('Presentations');
-        window.Presentations = Presentations;
         return {
             presentations: Presentations.find({}, {sort: {title: 1}}).fetch()
         };
@@ -21,6 +20,7 @@ var App = React.createClass({
 });
 
 if (Meteor.isClient) {
+    window.Presentations = Presentations;
     Meteor.startup(function () {
         React.render(<App />, document.getElementById('root'));
     });
